@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@600&display=swap"
+      rel="stylesheet"
+    />
+    <title>Wordle Coder</title>
+  </head>
+  <body>
+    <style>
+      :root {
+        /* color  */
+        --darkGreen: #538d4e;
+        --gray: #3a3a3c;
+        --darkBlue: #171321;
+        --white: #f7f8fa;
+        --yellow: #b59f3b;
+        --lightGray: #565758;
+
+        /* fonts */
+        --font-body: "Open Sans", Arial, sans-serif;
+
+        /* reference color and font */
+        --color-correct: var(--darkGreen);
+        --color-present: var(--yellow);
+        --color-absent: var(--gray);
+        --color-lightBorder: var(--lightGray);
+
+        --color-border: var(--gray);
+        --color-background: var(--darkBlue);
+        --color-white: var(--white);
+
+        --font-title: var(--title);
+        --font-tile: var(--tile-letter);
+      }
+
+      html {
+        font-size: 100%;
+        font-family: var(--font-body);
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        padding: 1rem 2rem;
+        background-color: #121213;
+        color: white;
+        display: flex;
+        justify-content: center;
+        text-transform: uppercase;
+        font-weight: 600;
+        flex-direction: column;
+        align-items: center;
+        white-space: nowrap;
+        font-family: "Open Sans", sans-serif;
+        font-weight: 600;
+      }
+
+      h1 {
+        font-size: 36px;
+        letter-spacing: 2px;
+        margin-top: 0;
+      }
+
+      .guess {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        grid-gap: 3px;
+        margin-bottom: 6px;
+        width: 300px;
+      }
+
+      .guess__tile {
+        border: 2px solid var(--color-border);
+        height: 52px;
+        width: 52px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 32px;
+      }
+
+      .has-letter {
+        border-color: var(--color-lightBorder);
+        transform: scale(1.05);
+      }
+
+      /* blinking animation */
+      /* .remove-scale {
+        transform: scale(1.05);
+      } */
+
+      .correct {
+        background-color: var(--color-correct);
+        border-color: var(--color-correct);
+      }
+
+      .present {
+        background-color: var(--color-present);
+        border-color: var(--color-present);
+      }
+
+      .absent {
+        background-color: var(--color-absent);
+        border-color: var(--color-absent);
+      }
+
+      .flip-in {
+        animation: flip-in 250ms;
+        animation-fill-mode: forwards;
+      }
+
+      .flip-out {
+        animation: flip-out 250ms;
+        animation-fill-mode: forwards;
+      }
+
+      @keyframes flip-in {
+        from {
+          transform: rotateX(0deg);
+        }
+        to {
+          transform: rotateX(-90deg);
+        }
+      }
+
+      @keyframes flip-out {
+        from {
+          transform: rotateX(-90deg);
+        }
+        to {
+          transform: rotateX(0deg);
+        }
+      }
+    </style>
+
+    <h1>Wordle Clone</h1>
+
+    <section class="game">
+      <div id="guess1" class="guess" data-letters="">
+        <div class="guess__tile" id="guess1Tile1"></div>
+        <div class="guess__tile" id="guess1Tile2"></div>
+        <div class="guess__tile" id="guess1Tile3"></div>
+        <div class="guess__tile" id="guess1Tile4"></div>
+        <div class="guess__tile" id="guess1Tile5"></div>
+      </div>
+      <div id="guess2" class="guess" data-letters="">
+        <div class="guess__tile" id="guess2Tile1"></div>
+        <div class="guess__tile" id="guess2Tile2"></div>
+        <div class="guess__tile" id="guess2Tile3"></div>
+        <div class="guess__tile" id="guess2Tile4"></div>
+        <div class="guess__tile" id="guess2Tile5"></div>
+      </div>
+      <div id="guess3" class="guess" data-letters="">
+        <div class="guess__tile" id="guess3Tile1"></div>
+        <div class="guess__tile" id="guess3Tile2"></div>
+        <div class="guess__tile" id="guess3Tile3"></div>
+        <div class="guess__tile" id="guess3Tile4"></div>
+        <div class="guess__tile" id="guess3Tile5"></div>
+      </div>
+      <div id="guess4" class="guess" data-letters="">
+        <div class="guess__tile" id="guess4Tile1"></div>
+        <div class="guess__tile" id="guess4Tile2"></div>
+        <div class="guess__tile" id="guess4Tile3"></div>
+        <div class="guess__tile" id="guess4Tile4"></div>
+        <div class="guess__tile" id="guess4Tile5"></div>
+      </div>
+      <div id="guess5" class="guess" data-letters="">
+        <div class="guess__tile" id="guess5Tile1"></div>
+        <div class="guess__tile" id="guess5Tile2"></div>
+        <div class="guess__tile" id="guess5Tile3"></div>
+        <div class="guess__tile" id="guess5Tile4"></div>
+        <div class="guess__tile" id="guess5Tile5"></div>
+      </div>
+      <div id="guess6" class="guess" data-letters="">
+        <div class="guess__tile" id="guess6Tile1"></div>
+        <div class="guess__tile" id="guess6Tile2"></div>
+        <div class="guess__tile" id="guess6Tile3"></div>
+        <div class="guess__tile" id="guess6Tile4"></div>
+        <div class="guess__tile" id="guess6Tile5"></div>
+      </div>
+    </section>
+
+    <section class="keyboard"></section>
+    <script>
+      const WORDS = ["space", "baker", "games", "clone", "bread"];
+
+      let solutionWord = "";
+      const chooseWord = () => {
+        // choose random item from words array
+        let randomItem = Math.floor(Math.random() * WORDS.length);
+        console.log("words: ", WORDS);
+        solutionWord = WORDS[randomItem];
+      };
+
+      chooseWord();
+      console.log("solution word = " + solutionWord);
+      // define the regex
+      let letterPattern = /^[a-zA-Z]$/;
+      let currentGuessCount = 1;
+      //   currentGuess is incremented by 1
+      let currentGuess = document.querySelector("#guess" + currentGuessCount);
+
+      //TODO: Detect keypresses
+
+      document.addEventListener("keydown", (e) => {
+        console.log("keypress: " + e.key);
+
+        // if a letter
+        let keypress = e.key;
+        if (currentGuessCount < 7) {
+          if (
+            letterPattern.test(e.key) &&
+            currentGuess.dataset.letters.length < 5
+          ) {
+            //   console.log("is Letter");
+            updateLetters(keypress);
+          }
+          // if backspace
+          else if (e.key == "Backspace" && currentGuess.dataset.letters != "") {
+            deleteFromLetters();
+          }
+          // if enter
+          else if (
+            e.key == "Enter" &&
+            currentGuess.dataset.letters.length == 5
+          ) {
+            // console.log("submit guess");
+            submitGuess();
+          }
+        }
+      });
+
+      const submitGuess = () => {
+        console.log("submit guess");
+
+        for (let i = 0; i < 5; i++) {
+          console.log("currentGuessCount", currentGuessCount, "loop", i);
+          setTimeout(() => {
+            revealTile(i, checkLetter(i));
+          }, i * 200);
+          // console.log(checkLetter(i));
+        }
+      };
+
+      const checkIfGuessComplete = (i) => {
+        if (i == 4) {
+          console.log("guess not complete, check win");
+          checkWin();
+        } else {
+          console.log("guess not complete");
+        }
+      };
+
+      const checkWin = () => {
+        console.log("check win:");
+        if (currentGuess.dataset.letters == solutionWord) {
+          setTimeout(() => {
+            alert("You win!");
+          }, 400);
+          return true;
+        } //
+        else {
+          // not won
+          // !! only increment the guess if it is not a win
+          currentGuessCount = currentGuessCount + 1;
+          currentGuess = document.querySelector("#guess" + currentGuessCount);
+          console.log("not a win, increment guess count", currentGuessCount);
+          if (currentGuessCount == 7) {
+            showSolution();
+          }
+        }
+      };
+
+      const showSolution = () => {
+        setTimeout(() => {
+          alert("You lose, the word was " + solutionWord.toUpperCase());
+        }, 400);
+      };
+
+      // - if keypress is a letter
+      // - update 'letters' attribute
+      const updateLetters = (letter) => {
+        let oldLetters = currentGuess.dataset.letters;
+        let newLetters = oldLetters + letter;
+        let currentTile = newLetters.length;
+        currentGuess.dataset.letters = newLetters;
+
+        console.log("currentTile = " + currentTile);
+        updateTiles(currentTile, letter);
+      };
+
+      // - update tile markup based on 'letters' value
+      const updateTiles = (tileNumber, letter) => {
+        console.log("updateTile(" + tileNumber, letter + ")");
+        let currentTile = document.querySelector(
+          "#guess" + currentGuessCount + "Tile" + tileNumber
+        );
+
+        currentTile.textContent = letter;
+        currentTile.classList.add("has-letter");
+      };
+
+      // Backspace -- delete last letter
+      const deleteFromLetters = () => {
+        // remove last letter from data-letters
+        let oldLetters = currentGuess.dataset.letters;
+        console.log("oldletters:", oldLetters);
+        // let newLetters = oldLetters.substring(0, oldLetters.length - 1);
+        let newLetters = oldLetters.slice(0, -1);
+        currentGuess.dataset.letters = newLetters;
+        console.log("newLetters:", newLetters);
+        deleteFromTiles(oldLetters.length);
+      };
+
+      // Backspace -- delete tile markup
+      const deleteFromTiles = (tileNumber) => {
+        // if (tileNumber > 0) {} alternative to prevent backspace
+        // remove markup from last tile
+        console.log("deleteFromTiles = " + tileNumber);
+
+        let currentTile = document.querySelector(
+          "#guess" + currentGuessCount + "Tile" + tileNumber
+        );
+        currentTile.textContent = "";
+        currentTile.classList.remove("has-letter");
+      };
+
+      // check letter to solution
+      // parameter = letter position in word
+      const checkLetter = (position) => {
+        // console.log(position);
+        let guessedLetter = currentGuess.dataset.letters.charAt(position);
+        let solutionLetter = solutionWord.charAt(position);
+        console.log(guessedLetter, solutionLetter);
+
+        // if letters match, return "correct"
+        if (guessedLetter == solutionLetter) {
+          console.log("correct");
+          return "correct";
+        }
+        // if not a match, if letter exists in solution word, return "present"
+        else {
+          return checkLetterExist(guessedLetter) ? "present" : "absent";
+        }
+        // if not a match, if letter doesn't exist in solution, return "absent"
+      };
+
+      const checkLetterExist = (letter) => {
+        return solutionWord.includes(letter);
+      };
+
+      const revealTile = (i, state) => {
+        console.log("revealTile = " + i, state);
+        let tileNum = i + 1;
+        // let tile = document.querySelector("#guessTile" + tileNum);
+        flipTile(tileNum, state);
+        checkIfGuessComplete(i);
+      };
+
+      const flipTile = (tileNum, state) => {
+        let tile = document.querySelector(
+          "#guess" + currentGuessCount + "Tile" + tileNum
+        );
+        tile.classList.add("flip-in");
+        setTimeout(() => {
+          tile.classList.add(state);
+        }, 250);
+        setTimeout(() => {
+          tile.classList.remove("flip-in");
+          tile.classList.add("flip-out");
+        }, 250);
+        // tile.classList.add(state);
+      };
+
+      // - if keypress is backspace
+      // - delete last letter in 'letters'
+      // - update tile markup based on 'letters'
+    </script>
+  </body>
+</html>
